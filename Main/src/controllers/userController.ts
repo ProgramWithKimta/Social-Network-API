@@ -125,5 +125,5 @@ export const deleteUser = async (req: Request, res: Response) => {
         console.log(err);
         return res.status(500).json(err);
     }
-}
+};
 
