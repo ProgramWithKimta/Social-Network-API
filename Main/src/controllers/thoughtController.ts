@@ -40,8 +40,13 @@ export const getThoughtById = async (req: Request, res: Response) => {
  * POST a thought and push to associated user
 */
 export const createThought = async (req: Request, res: Response) => {
-    const { thoughtText, username, userId } = req.body;
     try {
+      const { thoughtText, username, userId } = req.body;
+
+      if (!thoughtText || !username || !userId) {
+        return res.status(400).json({ message: 'User does not exist'});
+      }
+
       const newThought = await Thought.create({
         thoughtText,
         username
@@ -106,3 +111,63 @@ export const deleteThought = async (req: Request, res: Response) => {
       });
     }
   };
+
+/**
+ * POST to create a reaction stored in a single thought's reactions array field
+*/
+export const addReaction = async (req: Request, res: Response) => {
+  const { thoughtId } = req.params;
+  const { reactionBody, username } = req.body;
+
+  try {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      {
+        $push: {
+          reactions: {
+            reactionBody,
+            username
+          }
+        }
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    return res.json(updatedThought);
+  } catch (error: any) {
+    console.error(error);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+/**
+ * DELETE to pull and remove a reaction by the reaction's reactionId value
+*/
+export const removeReaction = async (req: Request, res: Response) => {
+  const { thoughtId, reactionId } = req.params;
+
+  try {
+    const updatedThought = await Thought.findByIdAndUpdate(
+      thoughtId,
+      {
+        $pull: {
+          reactions: { reactionId: reactionId }
+        }
+      },
+      { new: true }
+    );
+
+    if (!updatedThought) {
+      return res.status(404).json({ message: 'Thought not found' });
+    }
+
+    return res.json({ message: 'Reaction removed', thought: updatedThought });
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
