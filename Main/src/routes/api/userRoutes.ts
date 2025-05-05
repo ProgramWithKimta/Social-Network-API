@@ -1,5 +1,6 @@
 import { Router } from 'express';
 const router = Router();
+
 import {
   getAllStudents,
   getStudentById,
@@ -7,7 +8,7 @@ import {
   deleteStudent,
   addAssignment,
   removeAssignment,
-} from '../../controllers/studentController.js';
+} from '../../controllers/userController.js';
 
 // /api/students
 router.route('/').get(getAllStudents).post(createStudent);

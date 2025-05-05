@@ -1,12 +1,14 @@
 import { Router } from 'express';
+
 const router = Router();
+
 import {
   getAllCourses,
   getCourseById,
   createCourse,
   updateCourse,
   deleteCourse,
-} from '../../controllers/courseController.js';
+} from '../../controllers/thoughtController.js';
 
 // /api/courses
 router.route('/').get(getAllCourses).post(createCourse);
