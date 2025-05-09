@@ -40,35 +40,36 @@ export const getThoughtById = async (req: Request, res: Response) => {
  * POST a thought and push to associated user
 */
 export const createThought = async (req: Request, res: Response) => {
-    try {
-      const { thoughtText, username, userId } = req.body;
+  try {
+    const { thoughtText, username, userId } = req.body;
 
-      if (!thoughtText || !username || !userId) {
-        return res.status(400).json({ message: 'User does not exist'});
-      }
-
-      const newThought = await Thought.create({
-        thoughtText,
-        username
-      });
-
-      const user = await User.findByIdAndUpdate(
-        userId,
-        { $push: {thoughts: newThought._id } },
-        { new: true }
-      );
-
-      if (!user) {
-        await Thought.findByIdAndDelete(newThought._id);
-        return res.status(404).json({ message: 'user not found so thought not saved'});
-      }
-      res.status(201).json(newThought);
-    } catch (error: any) {
-      res.status(400).json({
-        message: error.message
-      });
+    if (!thoughtText || !username || !userId) {
+      return res.status(400).json({ message: 'Missing required fields' });
     }
-  };
+
+    const newThought = await Thought.create({
+      thoughtText,
+      username
+    });
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $push: { thoughts: newThought._id } },
+      { new: true }
+    );
+
+    if (!user) {
+      await Thought.findByIdAndDelete(newThought._id);
+      return res.status(404).json({ message: 'User not found — thought not saved' });
+    }
+
+    return res.status(201).json(newThought);
+  } catch (error: any) {
+    return res.status(400).json({
+      message: error.message
+    });
+  }
+};
 
 /**
  * PUT to update a thought by its _id
