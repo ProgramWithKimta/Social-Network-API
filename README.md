@@ -32,5 +32,5 @@ This project is licensed under MIT
 Questions? Contact Me! [knguyen@gmail.com](mailto:knguyen@gmail.com)
 
 ## Links
-[View my Github Profile](https://github.com/ProgramWithKimta/JWT-Auth)
+[View my Github Profile](https://github.com/ProgramWithKimta/Social-Network-API.git)
 [View application on Render] (https://jwt-auth-stl5.onrender.com)

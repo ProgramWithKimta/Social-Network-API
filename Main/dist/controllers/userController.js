@@ -75,7 +75,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const { username } = req.body;
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, { username }, { new: true, runValidators: true });
+        const updatedUser = await User.findByIdAndUpdate({ _id: req.params.userId }, { username }, { new: true, runValidators: true });
         if (!updatedUser) {
             return res.status(404).json({ message: 'No user exists with that ID' });
         }
@@ -94,11 +94,11 @@ export const updateUser = async (req, res) => {
 */
 export const deleteUser = async (req, res) => {
     try {
-        const user = await User.findOneAndDelete({ _id: req.params.studentId });
+        const user = await User.findOneAndDelete({ _id: req.params.userId });
         if (!user) {
             return res.status(404).json({ message: 'No user exists' });
         }
-        return res.json({ message: 'Student successfully deleted' });
+        return res.json({ message: 'User successfully deleted' });
     }
     catch (err) {
         console.log(err);
