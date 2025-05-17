@@ -1,10 +1,10 @@
-import { connection } from 'mongoose';
+import db from '../config/connection.js';
 import { User, Thought } from '../models/index.js'
 import { users, thoughts, friendsMap } from './data.js'; 
 
 const seed = async () => {
   try {
-    connection.once('open', async () => {
+    db.once('open', async () => {
       console.log('Connected to MongoDB');
 
       // Clear existing data
