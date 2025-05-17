@@ -1,49 +1,45 @@
 export const users = [
-    {username: 'john',
-      email: 'user1@live.com' },
-    {username: 'jane',
-       email: 'user2@live.com' },
-    {username: 'doe',
-       email: 'user3@live.com' },
+    {username: 'panda',
+      email: 'panda@gmail.com' },
+    {username: 'kimta',
+       email: 'kimta@gmail.com' },
+    {username: 'kuma',
+       email: 'kuma@gmail.com' },
   ];
   
   export const thoughts = [
     {
-      thoughtText: 'What a great day to learn something new!',
-      username: 'john',
+      thoughtText: 'I love Pandas',
+      username: 'kimta',
       reactions: [
         {
-          reactionBody: 'I agree!',
-          username: 'jane',
-        },
-        {
-          reactionBody: 'Learning is fun!',
-          username: 'doe',
+          reactionBody: 'sure thing!',
+          username: 'kuma',
         },
       ],
     },
     {
-      thoughtText: 'TypeScript is awesome!',
-      username: 'jane',
+      thoughtText: 'i want a treat',
+      username: 'kuma',
       reactions: [
         {
-          reactionBody: 'Totally!',
-          username: 'john',
+          reactionBody: 'i could go for one too',
+          username: 'panda',
           
         },
       ],
     },
     {
-      thoughtText: 'MongoDB is a great database!',
-      username: 'doe',
+      thoughtText: 'im hungry for bamboo',
+      username: 'panda',
       reactions: [
         {
-          reactionBody: 'Absolutely!',
-          username: 'john',
+          reactionBody: 'that sounds gross',
+          username: 'kuma',
         },
         {
-          reactionBody: 'I prefer SQL though.',
-          username: 'jane',
+          reactionBody: 'I like bamboo sticks.',
+          username: 'kimta',
         },
       ],
     },
@@ -51,8 +47,8 @@ export const users = [
   
   // Simple friend mapping (usernames)
   export const friendsMap: Record<string, string[]> = {
-    john: ['jane', 'doe'],
-    jane: ['john'],
-    doe: ['john'],
+    kimta: ['Kuma'],
+    kuma: ['kimta', 'panda'],
+    Panda: ['kimta'],
   };
   
