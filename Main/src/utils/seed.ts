@@ -1,5 +1,4 @@
-import User from '../models/User.js';
-import Thought from '../models/Thought.js';
+import { User, Thought } from '../models/index.js'
 import { users, thoughts, friendsMap } from './data.js'; 
 import db from '../config/connection.js';
 
