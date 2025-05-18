@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Thought, User } from '../models/index.js';
+import { Thought } from '../models/index.js';
 
 /**
  * GET All Thoughts
@@ -26,7 +26,7 @@ export const getThoughtById = async (req: Request, res: Response) => {
         res.json(thought);
       } else {
         res.status(404).json({
-          message: 'Volunteer not found'
+          message: 'thought not found'
         });
       }
     } catch (error: any) {
@@ -41,34 +41,24 @@ export const getThoughtById = async (req: Request, res: Response) => {
 */
 export const createThought = async (req: Request, res: Response) => {
   try {
-    const { thoughtText, username, userId } = req.body;
+    const { thoughtText, username } = req.body;
 
-    if (!thoughtText || !username || !userId) {
+    if (!thoughtText || !username) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    const newThought = await Thought.create({
-      thoughtText,
-      username
-    });
+    const newThought = await Thought.create({ thoughtText, username });
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $push: { thoughts: newThought._id } },
-      { new: true }
-    );
+        return res.status(201).json(newThought);
+    } catch (err) {
+        // Handle errors and ensure there's always a return in the catch block
+        if (err instanceof Error) {
+            return res.status(500).json({ message: err.message });
+        }
 
-    if (!user) {
-      await Thought.findByIdAndDelete(newThought._id);
-      return res.status(404).json({ message: 'User not found — thought not saved' });
+        // Add fallback response in case 'err' is not an instance of Error
+        return res.status(500).json({ message: 'Unknown server error' });
     }
-
-    return res.status(201).json(newThought);
-  } catch (error: any) {
-    return res.status(400).json({
-      message: error.message
-    });
-  }
 };
 
 /**
@@ -76,9 +66,11 @@ export const createThought = async (req: Request, res: Response) => {
 */
 export const updateThought = async (req: Request, res: Response) => {
     try {
+      // const { thoughtText } = req.body;
+      
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $set: req.body },
+        { thoughtText: req.body.thoughtText },
         { runValidators: true, new: true }
       );
 
@@ -103,7 +95,7 @@ export const deleteThought = async (req: Request, res: Response) => {
       
       if(!thought) {
         res.status(404).json({
-          message: 'No course with that ID'
+          message: 'No thought with that ID'
         });
       }
     } catch (error: any) {

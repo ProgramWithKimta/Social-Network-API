@@ -3,7 +3,7 @@ import { Schema, model, type Document } from 'mongoose';
 
 interface IUser extends Document {
     _id: Schema.Types.ObjectId;
-    username: string;
+    username: String;
     email: String;
     thoughts: Schema.Types.ObjectId[];
     friends: Schema.Types.ObjectId[];
