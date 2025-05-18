@@ -33,4 +33,4 @@ Questions? Contact Me! [knguyen@gmail.com](mailto:knguyen@gmail.com)
 
 ## Links
 [View my Github Profile](https://github.com/ProgramWithKimta/Social-Network-API.git)
-[View application on Render] (https://jwt-auth-stl5.onrender.com)
+[Video Recording] (https://app.screencastify.com/v2/watch/ytGEeJmqnBFZJMrD7emC)
