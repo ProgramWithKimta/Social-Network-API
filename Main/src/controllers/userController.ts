@@ -85,11 +85,11 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const { username } = req.body;
+        // const { username } = req.body;
 
         const updatedUser = await User.findByIdAndUpdate(
             {_id: req.params.userId },
-            { username },
+            { username: req.body.username },
             { new: true, runValidators: true }
         );
 

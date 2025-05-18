@@ -1,4 +1,4 @@
-import { Thought, User } from '../models/index.js';
+import { Thought } from '../models/index.js';
 /**
  * GET All Thoughts
 */
@@ -25,7 +25,7 @@ export const getThoughtById = async (req, res) => {
         }
         else {
             res.status(404).json({
-                message: 'Volunteer not found'
+                message: 'thought not found'
             });
         }
     }
@@ -40,25 +40,20 @@ export const getThoughtById = async (req, res) => {
 */
 export const createThought = async (req, res) => {
     try {
-        const { thoughtText, username, userId } = req.body;
-        if (!thoughtText || !username || !userId) {
+        const { thoughtText, username } = req.body;
+        if (!thoughtText || !username) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
-        const newThought = await Thought.create({
-            thoughtText,
-            username
-        });
-        const user = await User.findByIdAndUpdate(userId, { $push: { thoughts: newThought._id } }, { new: true });
-        if (!user) {
-            await Thought.findByIdAndDelete(newThought._id);
-            return res.status(404).json({ message: 'User not found — thought not saved' });
-        }
+        const newThought = await Thought.create({ thoughtText, username });
         return res.status(201).json(newThought);
     }
-    catch (error) {
-        return res.status(400).json({
-            message: error.message
-        });
+    catch (err) {
+        // Handle errors and ensure there's always a return in the catch block
+        if (err instanceof Error) {
+            return res.status(500).json({ message: err.message });
+        }
+        // Add fallback response in case 'err' is not an instance of Error
+        return res.status(500).json({ message: 'Unknown server error' });
     }
 };
 /**
@@ -66,7 +61,8 @@ export const createThought = async (req, res) => {
 */
 export const updateThought = async (req, res) => {
     try {
-        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $set: req.body }, { runValidators: true, new: true });
+        // const { thoughtText } = req.body;
+        const thought = await Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { thoughtText: req.body.thoughtText }, { runValidators: true, new: true });
         if (!thought) {
             res.status(404).json({ message: 'No thought with this id!' });
         }
@@ -86,7 +82,7 @@ export const deleteThought = async (req, res) => {
         const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
         if (!thought) {
             res.status(404).json({
-                message: 'No course with that ID'
+                message: 'No thought with that ID'
             });
         }
     }

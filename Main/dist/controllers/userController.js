@@ -74,8 +74,8 @@ export const createUser = async (req, res) => {
 */
 export const updateUser = async (req, res) => {
     try {
-        const { username } = req.body;
-        const updatedUser = await User.findByIdAndUpdate({ _id: req.params.userId }, { username }, { new: true, runValidators: true });
+        // const { username } = req.body;
+        const updatedUser = await User.findByIdAndUpdate({ _id: req.params.userId }, { username: req.body.username }, { new: true, runValidators: true });
         if (!updatedUser) {
             return res.status(404).json({ message: 'No user exists with that ID' });
         }
